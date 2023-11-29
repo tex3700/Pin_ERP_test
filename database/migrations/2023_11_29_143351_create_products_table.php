@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\Hash;
 
 return new class extends Migration
 {
@@ -14,15 +13,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->string('article')->unique();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->string('role')->default('user');
-            $table->string('password')->default(Hash::make('12345678'));
-            $table->rememberToken();
+            $table->string('status')->default("unavailable");
+            $table->jsonb('data')->nullable();
             $table->timestamps();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->softDeletes();
         });
     }
 
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('products');
     }
 };

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -40,6 +41,16 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
     ];
+
+    public function checkUserRole(): bool
+    {
+        $allowedRole = config('products.role');
+
+        if (auth()->check() && auth()->user()->role === $allowedRole) {
+            return true;
+        }
+
+        return false;
+    }
 }
